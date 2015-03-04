@@ -26,7 +26,7 @@
 
 <header>
 	<hgroup>
-		<a href="{{ site.base_url }}" title="{{ site.name|e }} | {{ site.bio|e }}">
+		<a href="{{ site.base_url }}" title="{{ site.name|e }}{%- if site.bio %} | {{ site.bio|e }}{% endif %}">
 			<h1 class="site-title">{{ site.name }}</h1>
 			{%- if site.bio %}<h2 class="site-subtitle">{{ site.bio }}</h2>{% endif %}
 		</a>
