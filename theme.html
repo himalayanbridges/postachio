@@ -1,0 +1,224 @@
+{%- set eml1 = 'info' %}{% set eml2 = 'himalayanbridges.com' -%}
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#" xmlns:og="http://ogp.me/ns#">
+<head>
+	<meta charset="utf-8" />
+	<title>{{ site.name }}{% if is_login %} | Login{% elif is_tag %} | Tag: {{ tag|format_tag(humanize=True,link=False) }}{% elif post %} | {{ post.title|striptags }}{% endif %}</title>
+	<link rel="shortcut icon" href="{{ assets('favicon.ico') }}"/>
+	{{ header_meta }}
+	<link href="http://fonts.googleapis.com/css?family=Open+Sans+Condensed:700|Open+Sans:400italic,700italic,300,400,700" rel="stylesheet" type="text/css" />
+	<link href="http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300&text={{ site.bio|striptags|upper|urlencode }}" rel="stylesheet" type="text/css" />
+	<link href="{{ assets('style.css') }}" rel="stylesheet" />
+	{%- if site.cover_photo %}
+	<style>
+		body { background-image:url('{{ site.cover_photo }}'); }
+	</style>
+	{%- endif %}
+	{%- if site.analytics %}
+	<!-- Analytics -->
+	<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)})(window,document,'script','//www.google-analytics.com/analytics.js','ga');ga('create','{{ site.analytics }}','auto');ga('send','pageview');
+	</script>
+	{%- endif %}
+</head>
+<body class="{% if is_home %}home{% elif is_tag %}tag{% elif post.type == 'page' %}page{% elif post %}post{% endif %}{% if pagination and pagination.prev %} paged{% endif %}">
+{%- if is_login %}{{ login_form }}{% else %}
+
+<header>
+	<hgroup>
+		<a href="{{ site.base_url }}" title="{{ site.name|e }} | {{ site.bio|e }}">
+			<h1 class="site-title">{{ site.name }}</h1>
+			{%- if site.bio %}<h2 class="site-subtitle">{{ site.bio }}</h2>{% endif %}
+		</a>
+	</hgroup>
+	{%- if pages %}
+	<nav id="features">
+		<ul>
+		{%- for page in pages|sort(attribute='created_at') -%}
+		{%- if page.tags and 'featured' in page.tags -%}
+			<li><a href="{{ page.slug }}" class="{{ set_active(page.permalink) }}" title="{{ page.title|striptags|e }}">
+			{%- if page.photos and is_home -%}
+			{%- set photo = page.photos|first -%}
+			<img src="{{ photo.orig }}" />
+			{%- endif -%}
+			<span>{{ page.title }}</span></a></li>
+		{%- endif -%}
+		{%- endfor %}
+		</ul>
+	</nav>
+	{%- endif %}
+</header>
+
+<main>
+
+	{%- if is_tag or (pagination and pagination.prev) %}
+	<hgroup>
+		{%- if is_tag %}
+		<h2 class="tag-title">Showing articles tagged <span class="tag">&ldquo;{{ tag|format_tag(humanize=True,link=False) }}&rdquo;</span></h2>
+		{%- endif %}
+
+		{%- if pagination and (pagination.next or pagination.prev) %}
+		<div class="pagination">
+			{%- if pagination and pagination.next %}
+			<a href="{{ pagination.next }}" class="next"><span class="icon">Next</span></a>
+			{%- endif %}
+			{%- if pagination and pagination.prev %}
+			<a href="{{ pagination.prev }}" class="prev"><span class="icon">Previous</span></a>
+			<h2 class="paged-title">Page {{ pagination.prev|replace('/','',count=1)|int + 1 }}</h2>
+			{%- endif %}
+		</div>
+		{%- endif %}
+
+	</hgroup>
+	{%- endif %}
+
+	{%- if posts %}
+
+	{%- for post in posts %}
+	<article id="{{ post.slug }}">
+		<section class="post-meta">
+			<span class="date">{{ post.created_at|format_date }}</span>
+			{%- if post.location.latitude and post.location.longitude %}
+			{%- set lat = post.location.latitude|round(4) %}
+			{%- set long = post.location.longitude|round(4) %}
+			<span class="location"><a href="http://maps.googleapis.com/maps/api/staticmap?markers={{ lat }},{{ long }}&amp;zoom=6&amp;size=640x480&amp;sensor=false" target="map" class="icon">{{ lat }}&deg;, {{ long }}&deg;</a></span>
+			{%- endif %}
+			<h1 class="post-title"><a href="{{ post.permalink }}">{{ post.title }}</a></h1>
+		</section>
+		<section class="post-content" data-type-cleanup="true">
+			{{ post.content }}
+		</section>
+	</article>
+	{%- endfor %}
+
+	{%- elif post.type == 'page' %}
+
+	<article id="{{ page.slug }}">
+		<section class="page-meta">
+			<h1 class="page-title">{{ page.title }}</h1>
+		</section>
+		<section class="page-content" data-type-cleanup="true">
+			{{ page.content }}
+		</section>
+	</article>
+
+	{%- elif post %}
+
+	<article id="{{ post.slug }}">
+		<section class="post-meta">
+			<span class="date">{{ post.created_at|format_date }}</span>
+			{%- if post.location.latitude and post.location.longitude %}
+			{%- set lat = post.location.latitude|round(4) %}
+			{%- set long = post.location.longitude|round(4) %}
+			<span class="location"><a href="http://maps.googleapis.com/maps/api/staticmap?markers={{ lat }},{{ long }}&amp;zoom=8&amp;size=640x480&amp;sensor=false" target="map" class="icon">{{ lat }}&deg;, {{ long }}&deg;</a></span>
+			{%- endif %}
+			<h1 class="post-title">{{ post.title }}</h1>
+		</section>
+		<section class="post-content" data-type-cleanup="true">
+			{{ post.content }}
+		</section>
+	</article>
+
+	{%- else %}
+
+	<article>
+		<section class="page-meta">
+			<h1 class="page-title">Page not found!</h1>
+		</section>
+		<section class="page-content">
+			<p>Sorry, there&rsquo;s nothing here.</p>
+			<p>You can <a href="javascript:history.go(-1)">go back</a> or <a href="{{ site.base_url }}">go to the home page</a>.
+		</section>
+	</article>
+
+	{%- endif %}
+
+	{%- if pagination and (pagination.next or pagination.prev) %}
+	<div class="pagination">
+		{%- if pagination and pagination.next %}
+		<a href="{{ pagination.next }}" class="next"><span class="icon">Next</span></a>
+		{%- endif %}
+		{%- if pagination and pagination.prev %}
+		<a href="{{ pagination.prev }}" class="prev"><span class="icon">Previous</span></a>
+		<a href="{{ site.base_url }}" class="home"><span class="icon">Home</span></a>
+		{%- endif %}
+	</div>
+	{%- endif %}
+
+</main>
+
+<footer>
+
+    {%- if posts_recent %}
+	<aside id="recent">
+		<span class="feed"><a href="{{ site.atom_url }}" class="icon">Feed</a></span>
+		<h3>Latest Articles</h3>
+		<ul>
+		{%- for post in posts_recent %}
+			{%- if loop.index <= 5 and loop.index > 0 %}
+			<li><span class="date">{{ post.created_at|format_date }}</span><a href="{{ post.permalink }}" class="post-title" title="{{ post.title|striptags|e }}">{{ post.title }}</a></li>
+			{%- endif %}
+		{%- endfor %}
+		</ul>
+	</aside>
+	{%- endif %}
+
+	{%- if pages %}
+	<aside id="pages">
+		<h3>Pages</h3>
+		<ul>
+			<li><a href="{{ site.base_url }}" class="home">Home/Blog</a></li>
+			{%- for page in pages|sort(attribute='created_at') %}
+			<li><a href="{{ page.permalink }}" class="page-title" title="{{ page.title|striptags|e }}">{{ page.title }}</a></li>
+			{%- endfor %}
+		</ul>
+
+	</aside>
+	{%- endif %}
+
+	<aside id="about">
+		{% if site.avatar %}
+		<img class="avatar" src="{{ site.avatar }}" alt="{{ site.author }}" />
+		{% endif %}
+		<h3>Glen Moore</h3>
+		<h4>Master Teacher<br />
+			Educational Consultant<br />
+			Co-founder</h4>
+		</p>B.S., University of Oklahoma, secondary science education; 10 years teaching experience in U.S. public, private and online schools. Glen is passionate about teaching because when done well it can cultivate the world into a better place.</p>
+	</aside>
+
+	<aside id="contact">
+		<p>Contact Himalayan Bridges for more information and scheduling:</p>
+		<p>
+			<span class="email">
+			<script type="text/javascript">
+				var first='{{ eml1 }}';var last='{{ eml2 }}';
+				document.write('<a href="mailto:'+first+'@'+last+'" class="icon">'+first+'@'+last+'<\/a>');
+			</script>
+			<noscript>Enable javascript to see email address.</noscript>
+			</span><br />
+			<span class="phone"><span class="icon">+91 867 097 9430</span></span></p>
+		{%- if site.twitter or site.facebook or site.googleplus or site.linkedin %}
+		<ul class="social">
+			{%- if site.twitter -%}
+			<li class="twitter"><a href="{{ site.twitter }}" class="icon" title="Twitter" target="_blank">Twitter</a></li>
+			{%- endif -%}
+			{%- if site.facebook -%}
+			<li class="facebook"><a href="{{ site.facebook }}" class="icon" title="Facebook" target="_blank">Facebook</a></li>
+			{%- endif -%}
+			{%- if site.googleplus -%}
+			<li class="googleplus"><a href="{{ site.googleplus }}" class="icon" title="Google+" target="_blank">Google+</a></li>
+			{%- endif -%}
+			{%- if site.linkedin -%}
+			<li class="linkedin"><a href="{{ site.linkedin }}" class="icon" title="LinkedIn" target="_blank">LinkedIn</a></li>
+			{%- endif -%}
+		</ul>
+		{%- endif %}
+	</aside>
+
+	<p>Powered by <a href="http://postach.io/" target="_blank">Postach.io</a></p>
+</footer>
+{%- endif %}
+{{ footer_meta }}
+</body>
+</html>
