@@ -36,8 +36,7 @@
 		<ul>
 		{%- for page in pages|sort(attribute='created_at') -%}
 		{%- if page.tags and 'featured' in page.tags -%}
-			<!-- {{ page }} -->
-			<li><a href="{{ page.permalink }}" class="{{ set_active(page.permalink) }}" title="{{ page.title|striptags|e }}">
+			<li><a href="{{ page.url }}" class="{{ set_active(page.url) }}" title="{{ page.title|striptags|e }}">
 			{%- if page.photos and is_home -%}
 			{%- set photo = page.photos|first -%}
 			<img src="{{ photo.orig }}" />
@@ -84,7 +83,7 @@
 			{%- set long = post.location.longitude|round(4) %}
 			<span class="location"><a href="http://maps.googleapis.com/maps/api/staticmap?markers={{ lat }},{{ long }}&amp;zoom=6&amp;size=640x480&amp;sensor=false" target="map" class="icon">{{ lat }}&deg;, {{ long }}&deg;</a></span>
 			{%- endif %}
-			<h1 class="post-title"><a href="{{ post.permalink }}">{{ post.title }}</a></h1>
+			<h1 class="post-title"><a href="{{ post.url }}">{{ post.title }}</a></h1>
 		</section>
 		<section class="post-content" data-type-cleanup="true">
 			{{ post.content }}
@@ -157,7 +156,7 @@
 		<ul>
 		{%- for post in posts_recent %}
 			{%- if loop.index <= 5 and loop.index > 0 %}
-			<li><span class="date">{{ post.created_at|format_date }}</span><a href="{{ post.permalink }}" class="post-title" title="{{ post.title|striptags|e }}">{{ post.title }}</a></li>
+			<li><span class="date">{{ post.created_at|format_date }}</span><a href="{{ post.url }}" class="post-title" title="{{ post.title|striptags|e }}">{{ post.title }}</a></li>
 			{%- endif %}
 		{%- endfor %}
 		</ul>
@@ -170,7 +169,7 @@
 		<ul>
 			<li><a href="{{ site.base_url }}" class="home">Home/Blog</a></li>
 			{%- for page in pages|sort(attribute='created_at') %}
-			<li><a href="{{ page.permalink }}" class="page-title  {{ set_active(page.permalink) }}" title="{{ page.title|striptags|e }}">{{ page.title }}</a></li>
+			<li><a href="{{ page.url }}" class="page-title  {{ set_active(page.url) }}" title="{{ page.title|striptags|e }}">{{ page.title }}</a></li>
 			{%- endfor %}
 		</ul>
 
