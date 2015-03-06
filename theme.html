@@ -36,7 +36,8 @@
 		<ul>
 		{%- for page in pages|sort(attribute='created_at') -%}
 		{%- if page.tags and 'featured' in page.tags -%}
-			<li><a href="{{ page.slug }}" class="{{ set_active(page.permalink) }}" title="{{ page.title|striptags|e }}">
+			<!-- {{ page }} -->
+			<li><a href="{{ page.permalink }}" class="{{ set_active(page.permalink) }}" title="{{ page.title|striptags|e }}">
 			{%- if page.photos and is_home -%}
 			{%- set photo = page.photos|first -%}
 			<img src="{{ photo.orig }}" />
@@ -169,7 +170,7 @@
 		<ul>
 			<li><a href="{{ site.base_url }}" class="home">Home/Blog</a></li>
 			{%- for page in pages|sort(attribute='created_at') %}
-			<li><a href="{{ page.permalink }}" class="page-title" title="{{ page.title|striptags|e }}">{{ page.title }}</a></li>
+			<li><a href="{{ page.permalink }}" class="page-title  {{ set_active(page.permalink) }}" title="{{ page.title|striptags|e }}">{{ page.title }}</a></li>
 			{%- endfor %}
 		</ul>
 
