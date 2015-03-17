@@ -11,6 +11,7 @@
 	$(document).ready(function(){$('meta[name=author]').remove();
 	$('head').append('<meta name="author" content="{{ site.name }}">');
 	$('img[class*=avatar]').prop('alt','{{ site.name }}');
+	$('img[class*=avatar]').prop('title','{{ site.name }}');
 	});
 	</script>
 	<link href="http://fonts.googleapis.com/css?family=Open+Sans+Condensed:700|Open+Sans:400italic,700italic,300,400,700" rel="stylesheet" type="text/css" />
