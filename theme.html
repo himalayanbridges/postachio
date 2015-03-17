@@ -15,6 +15,14 @@
 	</script>
 	<link href="http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700|Open+Sans:400italic,700italic,300,400,700" rel="stylesheet" type="text/css" />
 	<link href="http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300&text={{ site.bio|striptags|upper|urlencode }}" rel="stylesheet" type="text/css" />
+	<!-- Fonts override; remove local 'Condensed' -->
+	<style>
+	@font-face {
+	font-family: 'Open Sans Condensed';
+	font-style: normal;
+	font-weight: 300;
+	src: url(http://fonts.gstatic.com/s/opensanscondensed/v10/gk5FxslNkTTHtojXrkp-xMmDra0ONnO3FPH--kzkC5zr7w4p9aSvGirXi6XmeXNA.woff2) format('woff2’), url(http://fonts.gstatic.com/s/opensanscondensed/v10/gk5FxslNkTTHtojXrkp-xGAzD5WKQVN4wSyA0MYYi4rr7w4p9aSvGirXi6XmeXNA.woff) format('woff’), url(http://fonts.gstatic.com/l/font?kit=gk5FxslNkTTHtojXrkp-xM0XKAtSSSyMqYlDog1D1-ArqKADFspibRmjqkppbnG3) format('truetype’);
+	</style>
 	<link href="{{ assets('style.css') }}" rel="stylesheet" />
 	{%- if site.cover_photo %}
 	<style>
